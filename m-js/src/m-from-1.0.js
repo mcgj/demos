@@ -18,7 +18,7 @@ Mjf.Post = function(type,url,data,async,dataType,names,values){
 };
 
 /**
- * 构建请求参数
+ * Build request params
  * @param {array} names
  * @param {array} values
  * @returns {String}
