@@ -3,17 +3,20 @@ Mjf.prototype = new Object();
 
 /**
  * Ajax Post
- * @param {String} type
- * @param {String} url
- * @param {String} data
- * @param {String} async
- * @param {String} dataType
- * @param {String} params
+ * @param {String} rUrl
+ * @param {String} rParams
+ * @param {String} callback
  * @returns {String}
  */
-Mjf.Post = function(type,url,data,async,dataType,params){
-	var result = "";
-	return result;
+Mjf.Post = function(options){
+	$.ajax( {
+		type : "post",
+		url : options.rUrl,
+		data : options.rParams,
+		async : true,
+		dataType : "json",
+		success : options.callback(status)
+	});
 };
 
 /**
@@ -24,15 +27,17 @@ Mjf.Post = function(type,url,data,async,dataType,params){
  */
 Mjf.BuildParam = function(names,values){
 	var params = "";
-	if(names.length == 1){
-		params = names[0] + "=" + values[0];
-	}else{
-		for(var n = 0; n < names.length; n++){
-			if(n < names.length - 1){
-				params += names[n] + "=" + values[n] + "&"; 
+	for(var n = 0; n < names.length; n++){
+		if(n == 0){
+			if(n < names.length -1){
+				params = names[n] + "=" + values[n] + "&";
 			}else{
-				params += names[n] + "=" + values[n];
+				params = names[n] + "=" + values[n];
 			}
+		}else if(n < names.length - 1){
+			params += names[n] + "=" + values[n] + "&"; 
+		}else{
+			params += names[n] + "=" + values[n];
 		}
 	}
 	return params;
