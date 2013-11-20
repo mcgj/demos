@@ -14,9 +14,10 @@ TestCase("From Test", {
 //		values[2] = "0";
 		var rUrl = "http://localhost:8610/pxzf/jo/ckSLevel.do";
 		var rParams = Mjf.BuildParam(names,values);
-		var options = {rUrl:rUrl,rParams:rParams,callback:function(status){
-			alert("status: " + status);
-		}};
+		var callback = function(){
+			alert("----------------");
+		};
+		var options = {rUrl:rUrl,rParams:rParams,callback:callback};
 		Mjf.Post(options);
 	}
 });

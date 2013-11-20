@@ -1,28 +1,46 @@
 function Mjf(){};
 Mjf.prototype = new Object();
 
+Mjf.XmlHttp = null;
 /**
  * Ajax Post
- * @param {String} rUrl
- * @param {String} rParams
- * @param {String} callback
- * @returns {String}
+ * @param {Object} options {rUrl:rUrl,rMethod:rMethod,rParams:rParams,callback:function}
+ * @return {JsonString}
  */
-Mjf.Post = function(options){
-	$.ajax( {
-		type : "post",
-		url : options.rUrl,
-		data : options.rParams,
-		async : true,
-		dataType : "json",
-		success : options.callback(status)
-	});
+Mjf.Ajax = function(options){
+	if(null == Mjf.XmlHttp){
+		Mjf.XmlHttp = Mjf.getXMLHttp();
+	}
+	Mjf.XmlHttp.open(options.rMethod, options.rUrl + options.rParams, true);
+	Mjf.XmlHttp.onreadystatechange = options.callback;
+	Mjf.XmlHttp.send(null);
+};
+
+/**
+ * Create XMLHTTP
+ * @returns {Object}
+ */
+Mjf.getXMLHttp = function(){
+	var XMLHttpObject = null;
+	try {
+		XMLHttpObject = new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (E) {
+		try {
+			XMLHttpObject = new ActiveXObject("Microsoft.XMLHTTP");
+		} catch (E) {
+			XMLHttpObject = new XMLHttpRequest();
+		}
+	}
+	return XMLHttpObject;
 };
 
 /**
  * Build request params
- * @param {array} names
- * @param {array} values
+ * 
+ * @param {array}
+ *            names
+ * @param {array}
+ *            values
  * @returns {String}
  */
 Mjf.BuildParam = function(names,values){
