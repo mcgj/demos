@@ -482,6 +482,25 @@ Array.prototype.remove = function(dx) {
 };
 
 /**
+ * Json格式字符串转Json对象
+ * @param {String} str
+ * @returns {Object}
+ */
+Mjs.strToJsonObj = function(str){
+	var jsonObj = null != str ? eval("("+ str +")") : null;
+	return null != jsonObj ? jsonObj : null;
+};
+
+/**
+ * Json格式字符串转Json数组(支持多层JSON嵌套)
+ * @param {String} strs
+ * @returns {Arrays}
+ */
+Mjs.strToJsonArrs = function(strs){
+	return null != strs ? eval(strs) : null;
+};
+
+/**
  * 数组升序：示例：arrs.sortAsc(arrs);
  * @param arrs
  */

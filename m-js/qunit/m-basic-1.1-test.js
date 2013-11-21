@@ -178,7 +178,8 @@ test("isSymbols",function(){
 });
 
 test("rmHtmlTag",function(){
-	equal(Mjs.rmHtmlTag("</div></center></body></html><td width=\"10%\" height=\"64\" style=\"text-align:right;\"><td width=\"7%\">&nbsp;helloo.</td><td width=\"93%\" background=\"images/news-title-bg.gif\" class=\"left_bt2\"></td>"),"helloo.","Passed!");
+	var result = Mjs.rmHtmlTag("</div></center></body></html><td width=\"10%\" height=\"64\" style=\"text-align:right;\"><td width=\"7%\">&nbsp;helloo.</td><td width=\"93%\" background=\"images/news-title-bg.gif\" class=\"left_bt2\"></td>"); 
+	equal(result,"helloo.",result);
 });
 
 test("testArrsSort",function(){
@@ -189,4 +190,39 @@ test("testArrsSort",function(){
 	 arrDemo[3] = 100;
 //	 Mjs.testArrsSort(arrDemo,"Passed!");
 	 equal(true,true,"Passed!");
+});
+
+test("strToJsonObj",function(){
+	var str = "{\"id\":0,\"name\":\"fack\"}";
+	var jsonObj = Mjs.strToJsonObj(str);
+	var result = "id: " + jsonObj.id + " name: " + jsonObj.name;
+//	alert(result);
+	equal(null!=jsonObj,true,result);
+});
+
+test("strToJsonArrs",function(){
+	var strs = "[{\"id\":1,\"name\":\"jack\"},{\"id\":2,\"name\":\"mack\"},{\"id\":3,\"name\":\"dack\"}]";
+	var jsonObjs = Mjs.strToJsonArrs(strs);
+	var result = "";
+	for(var i = 0; i < jsonObjs.length; i++){
+		result += i + "=[id: " + jsonObjs[i].id + " name: " + jsonObjs[i].name + "] ";
+	}
+	//alert(result);
+	equal(null!=jsonObjs,true,result);
+});
+
+test("strToJsonArrs2",function(){
+	var strs = "[{\"id\":1,\"name\":\"jack\",\"list\":[{\"pic\":10,\"add\":\"US\"},{\"pic\":8,\"add\":\"CH\"}]},{\"id\":2,\"name\":\"tack\",\"list\":[{\"pic\":11,\"add\":\"US1\"},{\"pic\":81,\"add\":\"CH1\"}]}]";
+	var jsonObjs = Mjs.strToJsonArrs(strs);
+	var result = "";
+	for(var i = 0; i < jsonObjs.length; i++){
+		result += "[{id: " + jsonObjs[i].id + ",name: " + jsonObjs[i].name + ",list[";
+		var list = jsonObjs[i].list;
+		for(var l = 0; l < list.length; l++){
+			result += "{pic: " + list[l].pic + " add: " + list[l].add + "} ";
+		}
+		result += "]}]";
+	}
+	//alert(result);
+	equal(null!=jsonObjs,true,result);
 });
