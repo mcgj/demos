@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="css/datetimepicker.css">
+
+<script type="text/javascript" src="../jquery/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+</head>
+<body>
+<center>
+
+<!-- 你也可以指定一个符合 ISO-8601 格式的日期时间，就可以忽略下面的格式：
+
+    yyyy-mm-dd
+    yyyy-mm-dd hh:ii
+    yyyy-mm-ddThh:ii
+    yyyy-mm-dd hh:ii:ss
+    yyyy-mm-ddThh:ii:ssZ
+    
+    
+    本插件支持月、每周中天的名称、weekStart选项的国际化。默认是语言是English ('en');其它可以使用的翻译文件在js/locales/ 目录中，
+    只需在本插件之后引入需要的语言文件即可
+    <script type="text/javascript" src="locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    指定插件国际化：language: 'zh-CN',
+    
+ -->
+
+<br/><br/><br/>
+<input size="16" type="text" value="2012-06-15 14:45" readonly class="form_datetime">
+<script type="text/javascript">
+
+$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+</script>
+
+
+<hr/>
+<div class="input-append date form_datetime">
+<input size="16" type="text" value="" readonly>
+<span class="add-on"><i class="icon-th"></i></span>
+</div>
+ 
+<script type="text/javascript">
+$(".form_datetime").datetimepicker({
+format: "dd MM yyyy - hh:ii"
+});
+</script> 
+
+<hr/>
+<div class="input-append date form_datetime">
+<input size="16" type="text" value="" readonly>
+<span class="add-on"><i class="icon-th"></i></span>
+</div>
+ 
+<script type="text/javascript">
+$(".form_datetime").datetimepicker({
+format: "dd MM yyyy - hh:ii",
+autoclose: true,
+todayBtn: true,
+pickerPosition: "bottom-left"
+});
+</script>
+
+<hr/>
+<div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
+<input size="16" type="text" value="" readonly>
+<span class="add-on"><i class="icon-remove"></i></span>
+<span class="add-on"><i class="icon-calendar"></i></span>
+</div>
+ 
+<script type="text/javascript">
+$(".form_datetime").datetimepicker({
+format: "yyyy-mm-dd hh:ii",
+autoclose: true,
+language: 'zh-CN',
+todayBtn: true,
+startDate: "2013-02-14 10:00",
+minuteStep: 10
+});
+</script>
+
+<hr/>
+<div class="input-append date form_datetime" data-date="2012-12-21T15:25:00Z">
+<input size="16" type="text" value="" readonly>
+<span class="add-on"><i class="icon-remove"></i></span>
+<span class="add-on"><i class="icon-th"></i></span>
+</div>
+<input type="text" id="mirror_field" value="" readonly />
+<script type="text/javascript">
+$(".form_datetime").datetimepicker({
+format: "dd MM yyyy - hh:ii",
+linkField: "mirror_field",
+linkFormat: "yyyy-mm-dd hh:ii"
+});
+</script>
+</center>
+</body>
+</html>
