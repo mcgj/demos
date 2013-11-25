@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>javascript_common</name>
+	<name>m-js</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
-		<!-- <buildCommand>
-			<name>org.eclipse.wst.jsdt.core.javascriptValidator</name>
-			<arguments>
-			</arguments>
-		</buildCommand> -->
-	</buildSpec> 
+	</buildSpec>
 	<natures>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
