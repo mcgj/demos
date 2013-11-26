@@ -1,54 +1,185 @@
+/**
+ * 自定义基础库
+ * 功能: 常用操作
+ * author: vic
+ * update: 2013
+ * email: hn_mcgj@163.com
+ */
 
 function Mjs(){};
 Mjs.prototype = new Object();
 
+/////////////////////////////获取元素/////////////////////////////////////
+
 /**
- * 用元素ID获取单选下拉框当前选中项的value,非单选下拉框类型返回null
+ * 用元素ID获取元素
  * @param {String} eId
- * @returns value/null
+ * @returns {Element}
  */
-Mjs.getSelectOneVal = function(eId){
-	return $("#" + eId + " option:selected").val();
+Mjs.getEmById = function(eId){return document.getElementById(eId);};
+
+/**
+ * 用元素名称获取一个或一组元素
+ * @param {String} eName
+ * @returns {NodeList}
+ */
+Mjs.getEmByName = function(eName){
+	return document.getElementsByName(eName);
 };
 
 /**
- * 用元素ID获取单选下拉框当前选中项的HTML,非单选下拉框类型返回null
- * @param {String} eId
- * @returns html/null
+ * 用元素标签名获取一个或一组元素对象
+ * @param {String} tagName
+ * @returns {NodeList}
  */
-Mjs.getSelectOneHtml = function(eId){
-	var obj = $("#" + eId);
-	return Mjs.isObjType(obj, Mjs.TYPE_SELECT_ONE) ? obj[obj.selectedIndex].innerHTML : null;
+Mjs.getEmByTagName = function(tagName){
+	return document.getElementsByTagName(tagName);
 };
 
 /**
- * 用元素ID获取单选下拉框当前选中项的Text,非单选下拉框类型返回null
- * @param {String} eId
- * @returns text/null
+ * 用元素标签名获取指定命名路径一个或一组元素对象
+ * function getElementsByTagNameNS(namespaceURI, localName)
+ * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html
+ * @param {String} namespaceURI
+ * @param {String} localName
+ * @returns {NodeList}      
  */
-Mjs.getSelectOneText = function(eId){
-	var obj = $("#" + eId);
-	return Mjs.isObjType(obj, Mjs.TYPE_SELECT_ONE) ? obj[obj.selectedIndex].innerText : null;
+Mjs.getEmByTagNameNS = function(namespaceURI, localName){
+	return document.getElementsByTagNameNS(namespaceURI, localName);
 };
 
-/**
- * 用元素ID获取文本框的value,非文本框类型返回null
- * @param {String} eId
- * @returns value/null
- */
-Mjs.getTextVal = function(eId){
-	var obj = $("#" + eId);
-	return Mjs.isObjType(obj, Mjs.TYPE_TEXT) ? obj.value : null;
-};
+/////////////////////////////获取元素结束/////////////////////////////////////
+
+/////////////////////////////常量/////////////////////////////////////
 
 /**文本框类型*/
 Mjs.TYPE_TEXT = "text";
+
+/**单选类型*/
+Mjs.TYPE_RADIO = "radio";
+
+/**多项类型*/
+Mjs.TYPE_CHECKBOX = "checkbox";
 
 /**单选下拉框类型*/
 Mjs.TYPE_SELECT_ONE = "select-one";
 
 /**多选下拉框类型*/
 Mjs.TYPE_SELECT_MULTIPLE = "select-multiple";
+
+/**符号*/
+Mjs.SYMBOLS = "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]";
+
+/////////////////////////////常量结束/////////////////////////////////////
+
+/////////////////////////////获取元素值/////////////////////////////////////
+
+/**
+ * 用元素ID或元素Name获取元素的value,如无需eName可取值的，eName可传""或null
+ * 包含元素类型：text,hidden,password,file,textarea,checkbox,radio,select-one,select-multiple
+ * @param {String} eId
+ * @param {String} eName
+ * @returns {String}
+ */
+Mjs.getEmVal = function(eId,eName){
+	var eml = Mjs.getEmById(eId);
+	var emlType = eml.type;
+	switch(emlType){
+        case "text":
+        case "hidden":
+        case "password":
+        case "file":
+        case "textarea": return eml.value;
+        case "checkbox":
+        case "radio": return Mjs.getRadioCheckboxVal(eName);
+        case "select-one":
+        case "select-multiple": return Mjs.getSelVal(eml);
+    }
+};
+
+/**
+ * 获取单选或多项下拉框value
+ * @param {Element} eml
+ * @returns {Array}
+ */
+Mjs.getSelVal = function(eml){
+	var length = eml.options.length;
+	var results = new Array();
+	var index = 0;
+	for(var i = 0; i < length; i++){
+		if(eml.options[i].selected && eml.options[i].value != ""){
+			results[index] = eml.options[i].value;
+			index++;
+		}
+	}
+	return results;
+};
+
+/**
+ * 获取单选按钮或多选项value
+ * @param {String} eName
+ * @returns {Array}
+ */
+Mjs.getRadioCheckboxVal = function(eName){
+	var emls = Mjs.getEmByName(eName);
+	var length = emls.length;
+	var results = new Array();
+	var index = 0;
+	for(var i = 0; i < length; i++){
+		if(emls[i].type == Mjs.TYPE_RADIO || emls[i].type == Mjs.TYPE_CHECKBOX){
+			if(emls[i].checked){
+				results[index] = emls[i].value;
+				index++;
+			}
+		}
+	}
+	return results;
+};
+
+/**
+ * 获取文本框的value,非文本框类型返回null
+ * @param {String} eId
+ * @returns value/null
+ */
+Mjs.getTextVal = function(eId){
+	var obj = Mjs.getEmById(eId);
+	return Mjs.isObjType(obj, Mjs.TYPE_TEXT) ? obj.value : null;
+};
+
+/**
+ * 获取单选下拉框当前选中项的value,非单选下拉框类型返回null
+ * @param {String} eId
+ * @returns value/null
+ */
+Mjs.getSelOneVal = function(eId){
+	var obj = Mjs.getEmById(eId);
+	return Mjs.isObjType(obj, Mjs.TYPE_SELECT_ONE) ? obj[obj.selectedIndex].value : null;
+};
+
+/**
+ * 获取单选下拉框当前选中项的HTML,非单选下拉框类型返回null
+ * @param {String} eId
+ * @returns html/null
+ */
+Mjs.getSelOneHtml = function(eId){
+	var obj = Mjs.getEmById(eId);
+	return Mjs.isObjType(obj, Mjs.TYPE_SELECT_ONE) ? obj[obj.selectedIndex].innerHTML : null;
+};
+
+/**
+ * 获取单选下拉框当前选中项的Text,非单选下拉框类型返回null
+ * @param {String} eId
+ * @returns text/null
+ */
+Mjs.getSelOneText = function(eId){
+	var obj = Mjs.getEmById(eId);
+	return Mjs.isObjType(obj, Mjs.TYPE_SELECT_ONE) ? obj[obj.selectedIndex].innerText : null;
+};
+
+/////////////////////////////获取元素值结束/////////////////////////////////////
+
+
+/////////////////////////////验证元素值///////////////////////////////////////
 
 /**
  * 验证元素类型
@@ -57,7 +188,7 @@ Mjs.TYPE_SELECT_MULTIPLE = "select-multiple";
  * @returns {Boolean}
  */
 Mjs.isEmType = function(eId,emType){
-	var obj = $("#" + eId);
+	var obj = Mjs.getEmById(eId);
 	return obj.type == emType ? true : false;
 };
 
@@ -285,6 +416,52 @@ Mjs.isExistsArray = function(str,arrs){
 };
 
 /**
+ * 验证字符串是否包含符号
+ * @param str
+ * @returns {Boolean}
+ */
+Mjs.isSymbols = function(str){
+	return new RegExp(Mjs.SYMBOLS).test(str);
+};
+
+/**
+ * 比较两个字符串是否一致
+ * @param src
+ * @param target
+ * @returns {Boolean}
+ */
+Mjs.isEquals = function(src,target){
+	if(src != target){
+		return false;
+	}else{
+		return true;
+	}
+};
+
+/**
+ * 验证输入字符串长度
+ * @param {String} str
+ * @param {Number} min
+ * @param {Number} max
+ * @returns {Boolean}
+ */
+Mjs.isLength = function(str,min,max){
+	if(!Mjs.isNumber(min) || !Mjs.isNumber(max)){
+		return false;
+	}
+	var tMin = parseInt(min),tMax = parseInt(max);
+	if(str.length < tMin || str.length > tMax){
+		return false;
+	}else{
+		return true;
+	}
+};
+
+/////////////////////////////验证元素值结束///////////////////////////////////////
+
+//////////////////////////////////字符处理/////////////////////////////////////////////
+
+/**
  * 将前后空格用空字符串替代
  * @param str
  * @returns {String} 前后空格用空字符串替代的字符串
@@ -301,6 +478,36 @@ Mjs.replaceFLTrim = function(str){
 Mjs.replaceFLTrim = function(str){
 	return str.replace(/^(\s|\u00A0)+/,'').replace(/(\s|\u00A0)+$/,'');
 };
+
+/**
+ * 删除字符串中所有符号
+ * @param str
+ * @returns {String}
+ */
+Mjs.rmSymbols = function(str){
+	var rege = new RegExp(Mjs.SYMBOLS);
+	var newStr = "";
+	for (var i = 0; i < str.length; i++) {
+		newStr = newStr + str.substr(i, 1).replace(rege, '');
+	}
+	return newStr;
+};
+
+/**
+ * 删除字符串中的HTML标签
+ * @param str
+ * @returns {String}
+ */
+Mjs.rmHtmlTag = function(str){
+	str = str.replace(/<\/?[^>]*>/g,'');
+    str = str.replace(/[ | ]*\n/g,'\n');
+    str = str.replace(/\n[\s| | ]*\r/g,'\n');
+    str = str.replace(/&nbsp;/ig,'');
+    return str;
+};
+
+//////////////////////////////////字符处理结束/////////////////////////////////////////////
+
 
 /**
  * 生成随机数
@@ -348,8 +555,8 @@ Mjs.getCookie = function(cName){
  * @param trId 行ID
  */
 Mjs.rmTr = function(tableId, trId){
-	var oTable = $("#" + tableId);
-	var oTr = $("#" + trId);
+	var oTable = document.getElementById(tableId);
+	var oTr = document.getElementById(trId);
 	if (null != oTr) {
 		oTable.deleteRow(oTr.rowIndex);
 	}
@@ -364,9 +571,9 @@ Mjs.rmTr = function(tableId, trId){
  * @param insertIndex 插入的位置(表示在该表的哪一行插入新一行)
  */
 Mjs.addTr = function(tableId, trId){
-	var oTable = $("#" + tableId);
+	var oTable = document.getElementById(tableId);
 	if(null != oTable){
-		var oTr = $("#" + trId);
+		var oTr = document.getElementById(trId);
 		if(null == oTr){
 			var newTr = oTable.insertRow(insertIndex);
 			newTr.id = trId;
@@ -571,78 +778,6 @@ Mjs.getLocaleString = function(){
  */
 Mjs.getTime = function(){
 	return date.getTime();
-};
-
-/**
- * 验证输入字符串长度
- * @param {String} str
- * @param {Number} min
- * @param {Number} max
- * @returns {Boolean}
- */
-Mjs.isLength = function(str,min,max){
-	if(!Mjs.isNumber(min) || !Mjs.isNumber(max)){
-		return false;
-	}
-	var tMin = parseInt(min),tMax = parseInt(max);
-	if(str.length < tMin || str.length > tMax){
-		return false;
-	}else{
-		return true;
-	}
-};
-
-/**
- * 比较两个字符串是否一致
- * @param src
- * @param target
- * @returns {Boolean}
- */
-Mjs.isEquals = function(src,target){
-	if(src != target){
-		return false;
-	}else{
-		return true;
-	}
-};
-
-/**符号*/
-Mjs.SYMBOLS = "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]";
-
-/**
- * 删除字符串中所有符号
- * @param str
- * @returns {String}
- */
-Mjs.rmSymbols = function(str){
-	var rege = new RegExp(Mjs.SYMBOLS);
-	var newStr = "";
-	for (var i = 0; i < str.length; i++) {
-		newStr = newStr + str.substr(i, 1).replace(rege, '');
-	}
-	return newStr;
-};
-
-/**
- * 验证字符串是否包含符号
- * @param str
- * @returns {Boolean}
- */
-Mjs.isSymbols = function(str){
-	return new RegExp(Mjs.SYMBOLS).test(str);
-};
-
-/**
- * 删除字符串中的HTML标签
- * @param str
- * @returns {String}
- */
-Mjs.rmHtmlTag = function(str){
-	str = str.replace(/<\/?[^>]*>/g,'');
-    str = str.replace(/[ | ]*\n/g,'\n');
-    str = str.replace(/\n[\s| | ]*\r/g,'\n');
-    str = str.replace(/&nbsp;/ig,'');
-    return str;
 };
 
 /**

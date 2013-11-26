@@ -5,6 +5,7 @@
 <title>m-basic-1.2 test</title>
 
 <link rel="stylesheet" href="qunit-1.12.0.css">
+<link rel="stylesheet" href="../bootstrap/2.3.2/css/bootstrap.min.css">
 <script src="qunit-1.12.0.js"></script>
 <script src="../jquery/1.7.1/jquery-1.7.1.min.js"></script>
 <script src="../src/m-basic-1.2.js"></script>
@@ -14,8 +15,19 @@
 <body>
 <div id="qunit"></div>
 <div id="qunit-fixture"></div>
+<br/>
 <hr/>
-昵称：<input type="text" id="petName" name="petName">
+昵称：<input type="text" id="petName" name="petName" value="Jack">
+<br/>
+性别：男：<input type="radio" id="sex" name="sex" value="1" checked="checked">
+	    女：<input type="radio" id="sex" name="sex" value="0">
+<br/>
+爱好: <br/>
+1:<input type="checkbox" id="aihao" name="aihao" value="1">
+<br/>
+2:<input type="checkbox" id="aihao" name="aihao" value="2" checked="checked">
+<br/>
+3:<input type="checkbox" id="aihao" name="aihao" value="3" checked="checked">
 <br/>
 国家：
 <select id="country" name="country">
@@ -23,6 +35,12 @@
 	<option value="2">美国</option>
 	<option selected="selected" value="3">俄罗斯</option>
 </select>
-
+武器：
+<select id="weapon" name="weapon" multiple="multiple">
+	<option value="骨玉">骨玉</option>
+	<option selected="selected" value="雷霆怒斩">雷霆怒斩</option>
+	<option selected="selected" value="逍遥扇">逍遥扇</option>
+	<option value="无极棍">无极棍</option>
+</select>
 </body>
 </html>

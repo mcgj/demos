@@ -1,10 +1,46 @@
-test("getSelectOneVal",function() {
-	
-	var result = Mjs.getSelectOneVal("country");
-	equal(result == 3,true,"result: " + result);
+test("getEmById",function() {
+	var result = Mjs.getEmById("petName").value;
+	equal(result == "Jack",true,"result: " + result);
 		
-	notEqual(result != 3,true,"result: " + result);
+	notEqual(result != "Jack",true,"result: " + result);
+});
 
+test("getEmByName",function() {
+	var result = Mjs.getEmByName("sex");
+	var length = result.length;
+	equal(length > 0,true,"result: " + length);
+});
+
+test("getEmByTagName",function() {
+	var result = Mjs.getEmByTagName("input");
+	var length = result.length;
+	var ids = new Array();
+	for(var i = 0; i < length; i++){
+		ids[i] = result[i].id;
+	}
+	equal(length > 0,true,"result: " + ids);
+});
+
+test("getEmVal",function() {
+	var petNameVal = Mjs.getEmVal("petName","");
+	equal(petNameVal == "Jack",true,"result: " + petNameVal);
+	
+	var sexVal = Mjs.getEmVal("sex","sex");
+	var sexValLength = sexVal.length;
+	equal(sexValLength > 0,true,"result: " + sexVal);
+	
+	var aihaoVal = Mjs.getEmVal("aihao","aihao");
+	var aihaoValLength = aihaoVal.length;
+	equal(aihaoValLength > 0,true,"result: " + aihaoVal);
+	
+	var countryVal = Mjs.getEmVal("country","country");
+	var countryValLength = countryVal.length;
+	equal(countryValLength > 0,true,"result: " + countryVal);
+	
+	var weaponVal = Mjs.getEmVal("weapon","weapon");
+	var weaponValLength = weaponVal.length;
+	equal(weaponValLength > 0,true,"result: " + weaponVal);
+	
 });
 
 test("isNull",function() {
